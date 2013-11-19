@@ -7,7 +7,9 @@ module Auctionet
                  else
                    "items.json"
                  end
-        open("https://auctionet.com/api/v2/" + suffix).read
+        data = open("https://auctionet.com/api/v2/" + suffix).read
+        json_data = JSON.decode data
+        json_data.values.first
       end
     end
   end

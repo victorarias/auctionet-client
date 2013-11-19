@@ -6,7 +6,7 @@ describe Auctionet::Client do
   let(:requester) { requester = double("requester", perform: payload) }
 
   describe "#fetch" do
-    let(:payload) { { "items" => [ {} ] }.to_json }
+    let(:payload) { [ {} ] }
 
     it "fetch items" do
       expect(client.fetch.size).to be > 0
@@ -18,7 +18,7 @@ describe Auctionet::Client do
   end
 
   describe "#fetch_item" do
-    let(:payload) { { "item" => { "id" => 1 } }.to_json }
+    let(:payload) { { "id" => 1 } }
 
     it "fetch a single item" do
       expect(client.fetch_item(1)).to_not be_nil
