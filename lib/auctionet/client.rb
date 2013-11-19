@@ -2,33 +2,34 @@ require "auctionet/client/version"
 require 'open-uri'
 require 'json'
 require 'active_support/core_ext'
+require 'auctionet/client/requester'
 
 module Auctionet
   class Client
+    def initialize(requester = Requester.new)
+      @requester = requester
+    end
+
     def fetch
       data = JSON.parse perform_request
-      clear_data(data, :items)
+      clear_data(data)
     end
 
     def fetch_item id
       data = JSON.parse perform_request id
-      clear_data(data, :item)
+      clear_data(data)
     end
 
     private
 
-    def clear_data(data, root)
-      data.symbolize_keys!
-      data[root]
+    attr_reader :requester
+
+    def clear_data(data)
+      data.values.first
     end
 
     def perform_request(param = nil)
-      suffix = if param
-                 "items/#{param}.json"
-               else
-                 "items.json"
-               end
-      open("https://auctionet.com/api/v2/" + suffix).read
+      requester.perform(param)
     end
   end
 end
